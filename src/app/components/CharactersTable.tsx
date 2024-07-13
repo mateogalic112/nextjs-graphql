@@ -22,6 +22,7 @@ import {
   PaginationItem,
 } from "@/components/ui/pagination";
 import { Skeleton } from "@/components/ui/skeleton";
+import CharacterDetails from "./CharacterDetails";
 
 const CharactersTable = () => {
   const [page, setPage] = useState(1);
@@ -96,7 +97,7 @@ const CharactersTable = () => {
               <TableCell>{character.origin.name}</TableCell>
               <TableCell>{character.location.name}</TableCell>
               <TableCell className="text-right">
-                <Button>View more</Button>
+                <CharacterDetails id={character.id} />
               </TableCell>
             </TableRow>
           ))}

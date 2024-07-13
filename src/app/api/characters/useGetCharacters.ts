@@ -57,6 +57,5 @@ export const GET_CHARACTERS_QUERY: TypedDocumentNode<Data, Variables> = gql`
 export const useGetCharacters = (page: number) => {
   return useQuery<Data, Variables>(GET_CHARACTERS_QUERY, {
     variables: { page },
-    fetchPolicy: "cache-and-network",
   });
 };

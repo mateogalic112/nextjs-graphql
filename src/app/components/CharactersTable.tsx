@@ -18,6 +18,7 @@ import {
   PaginationContent,
   PaginationItem,
 } from "@/components/ui/pagination";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const CharactersTable = () => {
   const [page, setPage] = useState(1);
@@ -32,6 +33,18 @@ const CharactersTable = () => {
   const results =
     (loading ? previousData?.characters.results : data?.characters.results) ??
     [];
+
+  if (loading && !previousData) {
+    return (
+      <div className="flex flex-col justify-center gap-8 max-w-screen-lg w-full">
+        <div className="flex flex-col gap-2">
+          {Array.from({ length: 20 }).map((_, index) => (
+            <Skeleton key={index} className="h-12" />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col justify-center gap-8 max-w-screen-lg w-full">

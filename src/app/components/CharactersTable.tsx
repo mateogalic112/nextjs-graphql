@@ -9,8 +9,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetCharacters } from "../api/characters/useGetCharacters";
-import { useState } from "react";
+import {
+  GET_CHARACTERS_QUERY,
+  useGetCharacters,
+} from "../api/characters/useGetCharacters";
+import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,7 +26,19 @@ import { Skeleton } from "@/components/ui/skeleton";
 const CharactersTable = () => {
   const [page, setPage] = useState(1);
 
-  const { data, previousData, loading } = useGetCharacters(page);
+  const { data, previousData, loading, client } = useGetCharacters(page);
+
+  // Prefetch next page on rerender
+  useEffect(() => {
+    const prefetchNextPage = (pageToPrefetch: number) => {
+      client.query({
+        query: GET_CHARACTERS_QUERY,
+        variables: { page: pageToPrefetch },
+      });
+    };
+
+    prefetchNextPage(page + 1);
+  }, [page, client]);
 
   const prevDisabled = !data?.characters.info.prev;
   const nextDisabled =
@@ -34,6 +49,7 @@ const CharactersTable = () => {
     (loading ? previousData?.characters.results : data?.characters.results) ??
     [];
 
+  // Fallback loading state skeleton
   if (loading && !previousData) {
     return (
       <div className="flex flex-col justify-center gap-8 max-w-screen-lg w-full">
@@ -49,7 +65,9 @@ const CharactersTable = () => {
   return (
     <div className="flex flex-col justify-center gap-8 max-w-screen-lg w-full">
       <Table
-        className={`${loading && previousData ? "opacity-50" : "opacity-100"}`}
+        className={`${
+          loading && previousData && !data ? "opacity-50" : "opacity-100"
+        }`}
       >
         <TableCaption>Characters</TableCaption>
         <TableHeader>
@@ -75,8 +93,8 @@ const CharactersTable = () => {
                 </div>
               </TableCell>
               <TableCell>{character.species}</TableCell>
-              <TableCell>{character.origin.name ?? "Unknown"}</TableCell>
-              <TableCell>{character.location.name ?? "Unknown"}</TableCell>
+              <TableCell>{character.origin.name}</TableCell>
+              <TableCell>{character.location.name}</TableCell>
               <TableCell className="text-right">
                 <Button>View more</Button>
               </TableCell>

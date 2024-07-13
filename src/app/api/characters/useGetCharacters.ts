@@ -28,7 +28,7 @@ interface Variables {
   page: number;
 }
 
-const GET_CHARACTERS_QUERY: TypedDocumentNode<Data, Variables> = gql`
+export const GET_CHARACTERS_QUERY: TypedDocumentNode<Data, Variables> = gql`
   query GetCharacters($page: Int!) {
     characters(page: $page) {
       info {

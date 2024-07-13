@@ -18,7 +18,6 @@ interface Data {
           id: string;
           name: string;
         };
-        episode: Array<{ id: string; name: string }>;
       }
     ];
   };
@@ -47,10 +46,6 @@ export const GET_CHARACTERS_QUERY: TypedDocumentNode<Data, Variables> = gql`
           name
         }
         location {
-          id
-          name
-        }
-        episode {
           id
           name
         }

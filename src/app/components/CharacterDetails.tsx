@@ -47,7 +47,13 @@ const CharacterDetails = ({ id }: Props) => {
                 width={80}
                 height={80}
               />
-              <Badge>{data.character.status}</Badge>
+              <Badge
+                variant={
+                  data.character.status === "Dead" ? "default" : "secondary"
+                }
+              >
+                {data.character.status}
+              </Badge>
             </div>
             <ScrollArea className="h-72 rounded-md border p-4">
               <h4 className="mb-4 text-sm font-medium leading-none">
